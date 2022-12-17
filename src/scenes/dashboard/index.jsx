@@ -2,7 +2,6 @@ import { Box, Button, IconButton, Typography } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Header from "../../components/Header";
@@ -29,7 +28,6 @@ class Dashboard extends Component {
   }
 
   getMonthEarn() {
-    console.log("apiFetch");
     fetch("http://localhost:3050/dashboard/monthearn")
       .then((response) => response.json())
       .then((data) => {
@@ -46,7 +44,6 @@ class Dashboard extends Component {
     const theme = themeSettings();
     const colors = tokens(theme.palette.mode);
     const { monthearn, progressmont, monthgoal } = this.state;
-    console.log(monthearn);
     var monthgoalstring = "goal :"+monthgoal;
     return (
       <Box m="20px">

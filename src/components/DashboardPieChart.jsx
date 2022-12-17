@@ -17,7 +17,6 @@ class PieChart extends Component {
   }
 
   getCountriesPurchase() {
-    console.log("apiFetch");
     fetch("http://localhost:3050/pie/countries/purchase")
       .then((response) => response.json())
       .then((data) => {

@@ -5,14 +5,15 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
 
+
+//_____________LOGIN___________________//
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleFormSubmit = (values) => {
-    console.log(values);
     axios
       .post("http://localhost:3050/user/generateToken", {
-        email: values.email,
+        username: values.username,
         pwd: values.password,
       })
       .then(
@@ -24,11 +25,7 @@ const Login = () => {
           console.log(error);
         }
       )
-      .then(
-        console.log(
-          window.location.reload(false)
-        )
-      );
+      .then(window.location.reload(false));
   };
 
   return (
@@ -61,13 +58,13 @@ const Login = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="E-Mail"
+                label="username"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.email}
-                name="email"
-                error={!!touched.email && !!errors.email}
-                helperText={touched.email && errors.email}
+                value={values.username}
+                name="username"
+                error={!!touched.username && !!errors.username}
+                helperText={touched.username && errors.username}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
@@ -98,11 +95,11 @@ const Login = () => {
 
 const checkoutSchema = yup.object().shape({
   password: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
+  username: yup.string().required("required"),
 });
 const initialValues = {
   password: "",
-  email: "",
+  username: "",
 };
 
 export default Login;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebarProvider, Menu, MenuItem } from "react-pro-sidebar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 //import { Link, Navigate } from "react-router-dom";
 import { tokens } from "../../theme";
@@ -12,7 +12,6 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from  "@mui/icons-material/MapOutlined";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -25,11 +24,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       style={{
         color: colors.grey[500],
       }}
-      onClick={() => {setSelected(title);console.log(`Selezionato ${title}`);navigate(to);}}
+      onClick={() => {
+        setSelected(title);
+        console.log(`Selezionato ${title}`);
+        navigate(to);
+      }}
       icon={icon}
     >
       <Typography>{title}</Typography>
-      
     </MenuItem>
   );
 };
@@ -113,84 +115,74 @@ const Sidebar = () => {
                 </Typography>
               </Box>
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/dashboard"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                <Item
+                  title="Dashboard"
+                  to="/dashboard"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Users
-            </Typography>
-            <Item
-              title="Contacts Information"
-              to="/contacts"
-              icon={<ContactsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Admin
-            </Typography>
-            <Item
-              title="Profile Form"
-              to="/form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            
+                <Typography
+                  variant="h6"
+                  color={colors.grey[100]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Users
+                </Typography>
+                <Item
+                  title="Contacts Information"
+                  to="/contacts"
+                  icon={<ContactsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Typography
+                  variant="h6"
+                  color={colors.grey[100]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Admin
+                </Typography>
+                <Item
+                  title="Profile Form"
+                  to="/form"
+                  icon={<PersonOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-            <Typography
-              variant="h6"
-              color={colors.grey[100]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/bar"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/pie"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Line Chart"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Geography Chart"
-              to="/geography"
-              icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-          </Box>
+                <Typography
+                  variant="h6"
+                  color={colors.grey[100]}
+                  sx={{ m: "15px 0 5px 20px" }}
+                >
+                  Charts
+                </Typography>
+                <Item
+                  title="Bar Chart"
+                  to="/bar"
+                  icon={<BarChartOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Pie Chart"
+                  to="/pie"
+                  icon={<PieChartOutlineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Line Chart"
+                  to="/line"
+                  icon={<TimelineOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </Box>
             </Box>
           )}
-
-          
         </Menu>
       </ProSidebarProvider>
     </Box>
