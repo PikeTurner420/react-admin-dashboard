@@ -165,7 +165,7 @@ class Dashboard extends Component {
               </Box>
             </Box>
             <Box height="250px" m="-20px 0 0 0">
-              <LineChart isDashboard={true} />
+              <LineChart />
             </Box>
           </Box>
           <Box

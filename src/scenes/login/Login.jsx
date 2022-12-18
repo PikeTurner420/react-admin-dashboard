@@ -12,13 +12,11 @@ import { useEffect } from "react";
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [alert, setAlert] = useState();
-  sessionStorage.removeItem("stupierror");
 
   useEffect(() => {
     let err = sessionStorage.getItem("stupierror");
     if (err) showAlert(err);
   });
-  //_____________________________________//
 
   //_______NASCONDI ALERT PER L'ERRORE___________//
   const hidealert = () => {
@@ -32,7 +30,7 @@ const Login = () => {
   const showAlert = (er) => {
     setAlert(
       <Alert
-        style={{ width: "25%" }}
+        style={{ width: "500px" }}
         severity="warning"
         action={
           <Button color="inherit" size="small" onClick={hidealert}>
@@ -57,6 +55,7 @@ const Login = () => {
         (response) => {
           console.log("token preso");
           sessionStorage.setItem("token_web", response.data);
+          console.log(response.data);
         },
         (error) => {
           console.log(error.response.data);
@@ -64,12 +63,12 @@ const Login = () => {
         }
       )
       .catch(() => {
-        localStorage.setItem(
+        sessionStorage.setItem(
           "stupierror",
           "Connection error, please try later"
         );
       })
-      .then(() => window.location.reload(false));
+      .finally(() => window.location.reload(false));
   };
   //____________________________________________________________________________//
 

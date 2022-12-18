@@ -10,6 +10,7 @@ const IdleTimerContainer = () => {
 
   const onIdle = () => {
     sessionStorage.removeItem("token_web");
+    sessionStorage.setItem("stupierror", "Kicked for inactivity");
     window.location.reload(false);
   };
 

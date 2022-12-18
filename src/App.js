@@ -18,10 +18,8 @@ import IdleTimerContainer from "./components/IdleTimerContainer";
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
-  var [token] = useState(() => sessionStorage.getItem("token_web"));
+  const [token] = useState(() => sessionStorage.getItem("token_web"));
   const [auth, setAuth] = useState(false);
-  console.log(token);
-
 
   //___________________RICHIESTA SINGOLA PER VALIDARE IL LOG IN_________________//
   function validateToken(token) {
@@ -47,22 +45,39 @@ function App() {
   }
   //_____________________________________________________________________________//
 
-
   //_____________RICHIESTA CONTINUA DEL TOKEN PER NON FAR LOGARE FUORI L'USER____________//
-  function refreshToken() {
-    axios.get("http://localhost:3050/user/restartToken", {}).then(
-      (response) => {
-        sessionStorage.setItem("token_web", response.data);
-        console.log("restart del token");
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+  function refreshToken(tokens) {
+    axios
+      .get("http://localhost:3050/user/restartToken", {
+        headers: {
+          thk: tokens,
+        },
+      })
+      .then(
+        (response) => {
+          sessionStorage.removeItem("token_web");
+          sessionStorage.setItem("token_web", response.data);
+          console.log("restart del token");
+        },
+        (error) => {
+          console.log(error);
+          window.location.reload(false);
+          sessionStorage.setItem(
+            "stupierror",
+            "Connection error, please try later"
+          );
+        }
+      )
+      .catch(() => {
+        setAuth(false);
+        window.location.reload(false);
+        sessionStorage.setItem(
+          "stupierror",
+          "Connection error, please try later"
+        );
+      });
   }
   //______________________________________________________________________________________//
-
-
 
   //_______USE EFFECT DELLE AUTENTICAZIONI________//
   useEffect(() => {
@@ -72,13 +87,11 @@ function App() {
   useEffect(() => {
     if (auth) {
       setInterval(() => {
-        refreshToken();
-      }, 8000);
+        refreshToken(token);
+      }, 3000);
     }
   }, [token, auth]);
   //______________________________________________//
-
-
 
   if (auth) {
     return (
