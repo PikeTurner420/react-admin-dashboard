@@ -4,12 +4,49 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import axios from "axios";
-
+import { useState } from "react";
+import Alert from "@mui/material/Alert";
+import { useEffect } from "react";
 
 //_____________LOGIN___________________//
 const Login = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [alert, setAlert] = useState();
+  sessionStorage.removeItem("stupierror");
 
+  useEffect(() => {
+    let err = sessionStorage.getItem("stupierror");
+    if (err) showAlert(err);
+  });
+  //_____________________________________//
+
+  //_______NASCONDI ALERT PER L'ERRORE___________//
+  const hidealert = () => {
+    console.log("hideAlert");
+    sessionStorage.removeItem("stupierror");
+    setAlert(<></>);
+  };
+  //_____________________________________________//
+
+  //__________MOSTRA ALER DELL'ERRORE_________________________//
+  const showAlert = (er) => {
+    setAlert(
+      <Alert
+        style={{ width: "25%" }}
+        severity="warning"
+        action={
+          <Button color="inherit" size="small" onClick={hidealert}>
+            CANCEL
+          </Button>
+        }
+      >
+        {er}
+      </Alert>
+    );
+  };
+  //____________________________________________________________//
+
+  //__________________FUNZIONE PER GENERARE IL TOKEN DOPO IL LOGIN____________//
   const handleFormSubmit = (values) => {
     axios
       .post("http://localhost:3050/user/generateToken", {
@@ -22,11 +59,19 @@ const Login = () => {
           sessionStorage.setItem("token_web", response.data);
         },
         (error) => {
-          console.log(error);
+          console.log(error.response.data);
+          sessionStorage.setItem("stupierror", error.response.data);
         }
       )
-      .then(window.location.reload(false));
+      .catch(() => {
+        localStorage.setItem(
+          "stupierror",
+          "Connection error, please try later"
+        );
+      })
+      .then(() => window.location.reload(false));
   };
+  //____________________________________________________________________________//
 
   return (
     <Box m="20px">
@@ -47,9 +92,11 @@ const Login = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Box
+              width="500px"
+              m="0px 50px 10px 0px"
               display="grid"
               gap="50px"
-              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              gridTemplateColumns="repeat(4, minmax(12, 1fr))"
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
@@ -81,6 +128,7 @@ const Login = () => {
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
+            {alert}
             <Box display="flex" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
                 Log-in

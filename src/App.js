@@ -20,26 +20,11 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
   var [token] = useState(() => sessionStorage.getItem("token_web"));
   const [auth, setAuth] = useState(false);
-  console.log(token)
+  console.log(token);
 
-  //_____________RICHIESTA CONTINUA DEL TOKEN PER NON FAR LOGARE FUORI L'USER____________//
-  useEffect(() => {
-    if (auth) {
-      setInterval(() => {
-        axios.get("http://localhost:3050/user/restartToken", {}).then(
-          (response) => {
-            sessionStorage.setItem("token_web", response.data);
-            console.log("restert del token");
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }, 6000);
-    }
-  }, [token, auth]);
-  //________________________RICHIESTA SINGOLA PER VALIDARE IL LOG IN
-  useEffect(() => {
+
+  //___________________RICHIESTA SINGOLA PER VALIDARE IL LOG IN_________________//
+  function validateToken(token) {
     axios
       .get("http://localhost:3050/user/validateToken", {
         headers: {
@@ -49,7 +34,7 @@ function App() {
       .then(
         (response) => {
           if (response.status === 200) {
-            console.log("autorizzato")
+            console.log("autorizzato");
             setAuth(true);
           } else {
             setAuth(false);
@@ -59,7 +44,41 @@ function App() {
           console.log(error);
         }
       );
+  }
+  //_____________________________________________________________________________//
+
+
+  //_____________RICHIESTA CONTINUA DEL TOKEN PER NON FAR LOGARE FUORI L'USER____________//
+  function refreshToken() {
+    axios.get("http://localhost:3050/user/restartToken", {}).then(
+      (response) => {
+        sessionStorage.setItem("token_web", response.data);
+        console.log("restart del token");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  //______________________________________________________________________________________//
+
+
+
+  //_______USE EFFECT DELLE AUTENTICAZIONI________//
+  useEffect(() => {
+    validateToken(token, setAuth);
   }, [token]);
+
+  useEffect(() => {
+    if (auth) {
+      setInterval(() => {
+        refreshToken();
+      }, 8000);
+    }
+  }, [token, auth]);
+  //______________________________________________//
+
+
 
   if (auth) {
     return (
@@ -97,14 +116,7 @@ function App() {
             <div className="app">
               <main className="content">
                 <Routes>
-                  <Route path="/" element={<Login />} />
-                  <Route path="/dashboard" element={<Login />} />
-                  <Route path="/contacts" element={<Login />} />
-                  <Route path="/form" element={<Login />} />
-                  <Route path="/bar" element={<Login />} />
-                  <Route path="/pie" element={<Login />} />
-                  <Route path="/line" element={<Login />} />
-                  <Route path="/geography" element={<Login />} />
+                  <Route path="/*" element={<Login />} />
                 </Routes>
               </main>
             </div>

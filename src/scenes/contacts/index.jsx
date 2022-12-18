@@ -110,26 +110,42 @@ class Contacts extends Component {
   }
 
   deleteCompany = (company) => {
-    fetch("http://localhost:4567/v1/company/delete/" + company, {
+    fetch("http://localhost:3050/contacts/deletecompany/" + company, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: null,
-    });
+    }).then(this.fetchCompanies());
   };
 
   deletePrivate = (privateid) => {
-    fetch("http://localhost:4567/v1/private/delete/" + privateid, {
+    fetch("http://localhost:3050/contacts/deleteprivate/" + privateid, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: null,
-    });
+    }).then(this.fetchPrivates());
   };
 
   fetchCompanies() {
+    fetch("http://localhost:4567/v1/companies")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState(
+          {
+            dataContactsCountry: data.data,
+            isLoadedC: true,
+          },
+          this.fetchCompanies2
+        );
+      })
+      .then(() => console.log("Companies fetch"))
+      .catch((er) => console.log(er));
+  }
+
+  fetchCompanies2() {
     fetch("http://localhost:4567/v1/companies")
       .then((response) => response.json())
       .then((data) => {
@@ -143,6 +159,22 @@ class Contacts extends Component {
   }
 
   fetchPrivates() {
+    fetch("http://localhost:4567/v1/privates")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState(
+          {
+            dataContactsPrivate: data.data,
+            isLoadedP: true,
+          },
+          this.fetchPrivates2
+        );
+      })
+      .then(() => console.log("Privates fetch"))
+      .catch((er) => console.log(er));
+  }
+
+  fetchPrivates2() {
     fetch("http://localhost:4567/v1/privates")
       .then((response) => response.json())
       .then((data) => {
